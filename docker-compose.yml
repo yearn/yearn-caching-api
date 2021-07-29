@@ -11,3 +11,5 @@ services:
       options:
           max-size: "200k"
           max-file: "10"
+  redis:
+    image: "redis:alpine"
