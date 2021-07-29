@@ -2,8 +2,12 @@ version: "3"
 services:
   api:
     build: .
+    command: yarn dev
     ports:
       - "3000:3000"
+    volumes: 
+      - ./routes:/app/routes
+      - ./plugins:/app/plugins
     environment:
       PORT: 3000      
     logging:

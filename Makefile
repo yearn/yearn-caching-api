@@ -3,22 +3,25 @@ ifdef FLAGS
 	flags += $(FLAGS)
 endif
 
-COMPOSE := docker-compose
+compose := docker-compose -f docker-compose.yml
+ifdef PROD
+	compose := docker-compose -f docker-compose.yml -f docker-compose.prod.yml
+endif
 
 up:
-	$(COMPOSE) up $(flags)
+	$(compose) up $(flags)
 
 logs:
-	$(COMPOSE) logs -f
+	$(compose) logs -f
 
 down:
-	$(COMPOSE) down
+	$(compose) down
 
 build:
-	$(COMPOSE) build --no-cache
+	$(compose) build
 
 clean-volumes:
-	$(COMPOSE) down -v
+	$(compose) down -v
 
 rebuild: down build up
 scratch: clean-volumes build up

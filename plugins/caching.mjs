@@ -13,7 +13,7 @@ const cache = cacheConfig({
 });
 
 /**
- * This plugins adds cache control.
+ * This plugins adds cache control
  *
  * @see https://github.com/fastify/fastify-caching
  */
