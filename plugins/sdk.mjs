@@ -14,6 +14,6 @@ const yearn = new Yearn(1, { provider });
  *
  * @see https://github.com/yearn/yearn-sdk
  */
-export default fp(async function (fastify) {
-  fastify.decorate("sdk", yearn);
+export default fp(async function (api) {
+  api.decorate("sdk", yearn);
 });

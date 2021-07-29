@@ -5,8 +5,8 @@ import fp from "fastify-plugin";
  *
  * @see https://github.com/fastify/fastify-sensible
  */
-export default fp(async function (fastify) {
-  fastify.register(import("fastify-sensible"), {
+export default fp(async function (api) {
+  api.register(import("fastify-sensible"), {
     errorHandler: false,
   });
 });

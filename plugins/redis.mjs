@@ -9,8 +9,8 @@ export const redis = new IORedis({ host: "redis" });
  *
  * @see https://github.com/fastify/fastify-redis
  */
-export default fp(async function (fastify) {
-  fastify.register(import("fastify-redis"), {
+export default fp(async function (api) {
+  api.register(import("fastify-redis"), {
     client: redis,
   });
 });

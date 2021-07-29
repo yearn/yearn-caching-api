@@ -17,6 +17,6 @@ const cache = cacheConfig({
  *
  * @see https://github.com/fastify/fastify-caching
  */
-export default fp(async function (fastify) {
-  fastify.register(import("fastify-caching"), { cache: cache });
+export default fp(async function (api) {
+  api.register(import("fastify-caching"), { cache: cache });
 });

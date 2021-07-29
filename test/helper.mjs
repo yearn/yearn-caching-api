@@ -9,8 +9,8 @@ export function config() {
 }
 
 export function build(t) {
-  const app = Fastify();
-  app.register(fp(App), config());
-  t.teardown(app.close.bind(app));
-  return app;
+  const api = Fastify();
+  api.register(fp(App), config());
+  t.teardown(api.close.bind(api));
+  return api;
 }

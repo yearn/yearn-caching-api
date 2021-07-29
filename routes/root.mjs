@@ -1,8 +1,9 @@
 /**
- * @param {import("fastify").FastifyInstance} fastify
+ * @param {import("fastify").FastifyInstance} api
  */
-export default async function (fastify) {
-  fastify.get("/", async () => {
-    return { root: false };
+export default async function (api) {
+  api.get("/", async () => {
+    const vaults = api.sdk.vaults.get();
+    return vaults;
   });
 }
