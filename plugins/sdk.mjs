@@ -3,9 +3,7 @@ import fp from "fastify-plugin";
 import { Yearn } from "@yfi/sdk";
 import { JsonRpcProvider } from "@ethersproject/providers";
 
-const alchemy =
-  "https://eth-mainnet.alchemyapi.io/v2/OIKkFA7d7MkWdy-hCy-nyJhI5C9APhu1";
-const provider = new JsonRpcProvider(alchemy);
+const provider = new JsonRpcProvider(process.env.WEB3_HTTP_PROVIDER);
 
 const yearn = new Yearn(1, { provider });
 

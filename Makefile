@@ -8,6 +8,8 @@ ifdef PROD
 	compose := docker-compose -f docker-compose.yml -f docker-compose.prod.yml
 endif
 
+all: down build up logs
+
 up:
 	$(compose) up $(flags)
 

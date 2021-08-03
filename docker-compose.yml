@@ -9,7 +9,8 @@ services:
       - ./routes:/app/routes
       - ./plugins:/app/plugins
     environment:
-      PORT: 3000      
+      PORT: 3000
+      WEB3_HTTP_PROVIDER: ${WEB3_HTTP_PROVIDER} 
     logging:
       driver: "json-file"
       options:
