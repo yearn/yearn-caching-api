@@ -16,7 +16,7 @@ declare module "fastify" {
     start(): Promise<void>;
     stop(): Promise<void>;
   }
-  
+
   interface FastifyInstance {
     sdk: Yearn<1>;
     cache: AbstractCache;

@@ -25,6 +25,7 @@ export default async function (fastify, opts) {
     options: Object.assign({}, opts),
   });
 
+  // bree needs at least one job to work
   if (jobs.length > 0) {
     const bree = new Bree({
       logger: fastify.log,

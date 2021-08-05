@@ -5,16 +5,16 @@ services:
     command: yarn dev
     ports:
       - "3000:3000"
-    volumes: 
+    volumes:
       - ./routes:/app/routes
       - ./plugins:/app/plugins
     environment:
       PORT: 3000
-      WEB3_HTTP_PROVIDER: ${WEB3_HTTP_PROVIDER} 
+      WEB3_HTTP_PROVIDER: ${WEB3_HTTP_PROVIDER}
     logging:
       driver: "json-file"
       options:
-          max-size: "200k"
-          max-file: "10"
+        max-size: "200k"
+        max-file: "10"
   redis:
     image: "redis:alpine"

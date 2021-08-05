@@ -5,17 +5,17 @@
 ## Starting
 
 ```
-$ make up
-```
-
-And if you wanna follow the logs:
-
-```
-$ make logs
+$ make
 ```
 
 ## Stopping
 
 ```
 $ make down
+```
+
+## Production deployment
+
+```
+$ PROD=true make
 ```
