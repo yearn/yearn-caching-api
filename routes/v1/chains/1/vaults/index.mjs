@@ -1,4 +1,5 @@
 import ms from "ms";
+import { OldAPI } from "../../../../../app.mjs";
 
 const VaultsGetCacheKey = "vaults.get";
 const VaultsGetCacheTime = ms("10 minutes");
@@ -8,8 +9,6 @@ const VaultsTokensCacheTime = ms("10 minutes");
 
 const VaultsAllCacheKey = "vaults.all";
 const VaultsAllCacheTime = ms("10 minutes");
-
-const OldAPI = 'https://d28fcsszptni1s.cloudfront.net/v1/chains/1/vaults'
 
 /**
  * @param {import("fastify").FastifyInstance} api
@@ -53,7 +52,7 @@ export default async function (api) {
 
   api.get("/all", async (_, reply) => {
     let [hit, allVaults] = await api.helpers.cachedCall(
-      () => fetch(`${OldAPI}/all`).then(res => res.json()),
+      () => fetch(`${OldAPI}/v1/chains/1/vaults/all`).then(res => res.json()),
       VaultsAllCacheKey,
       VaultsAllCacheTime
     );
