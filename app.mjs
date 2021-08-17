@@ -9,8 +9,6 @@ import Graceful from "@ladjs/graceful";
 
 import jobs from "./jobs/index.mjs";
 
-export const OldAPI = 'https://d28fcsszptni1s.cloudfront.net'
-
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 /**

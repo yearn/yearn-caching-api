@@ -1,5 +1,5 @@
 import ms from "ms";
-import { OldAPI } from "../../../../../app.mjs";
+import { OLD_API } from "../../../../../constants/index.mjs";
 
 const VaultsGetCacheKey = "vaults.get";
 const VaultsGetCacheTime = ms("10 minutes");
@@ -52,7 +52,7 @@ export default async function (api) {
 
   api.get("/all", async (_, reply) => {
     let [hit, allVaults] = await api.helpers.cachedCall(
-      () => fetch(`${OldAPI}/v1/chains/1/vaults/all`).then(res => res.json()),
+      () => fetch(`${OLD_API}/v1/chains/1/vaults/all`).then(res => res.json()),
       VaultsAllCacheKey,
       VaultsAllCacheTime
     );
