@@ -1,6 +1,5 @@
 import ms from "ms";
 import fetch from "cross-fetch";
-import { OLD_API } from "#constants";
 
 const VaultsGetCacheKey = "vaults.get";
 const VaultsGetCacheTime = ms("10 minutes");
@@ -53,7 +52,8 @@ export default async function (api) {
 
   api.get("/all", async (_, reply) => {
     let [hit, allVaults] = await api.helpers.cachedCall(
-      () => fetch(`${OLD_API}/v1/chains/1/vaults/all`).then((res) => res.json()),
+      () =>
+        fetch(`${process.env.API_MIGRATION_URL}/v1/chains/1/vaults/all`).then((res) => res.json()),
       VaultsAllCacheKey,
       VaultsAllCacheTime
     );

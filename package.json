@@ -61,8 +61,5 @@
     "eslint-plugin-prettier": "^3.4.0",
     "prettier": "^2.3.2",
     "tap": "^15.0.9"
-  },
-  "imports": {
-    "#constants": "./constants.mjs"
   }
 }
