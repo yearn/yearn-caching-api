@@ -4,7 +4,7 @@ import cacheConfig from "abstract-cache";
 
 import { redis } from "./redis.mjs";
 
-const cache = cacheConfig({
+export const cache = cacheConfig({
   useAwait: true,
   driver: {
     name: "abstract-cache-redis", // must be installed via `npm install`
