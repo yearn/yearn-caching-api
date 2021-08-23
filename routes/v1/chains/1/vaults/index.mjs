@@ -1,10 +1,14 @@
 import ms from "ms";
+import fetch from "cross-fetch";
 
 const VaultsGetCacheKey = "vaults.get";
 const VaultsGetCacheTime = ms("10 minutes");
 
 const VaultsTokensCacheKey = "vaults.tokens";
 const VaultsTokensCacheTime = ms("10 minutes");
+
+const VaultsAllCacheKey = "vaults.all";
+const VaultsAllCacheTime = ms("10 minutes");
 
 /**
  * @param {import("fastify").FastifyInstance} api
@@ -44,5 +48,16 @@ export default async function (api) {
     );
 
     reply.header("X-Cache-Hit", hit).send(tokens);
+  });
+
+  api.get("/all", async (_, reply) => {
+    let [hit, allVaults] = await api.helpers.cachedCall(
+      () =>
+        fetch(`${process.env.API_MIGRATION_URL}/v1/chains/1/vaults/all`).then((res) => res.json()),
+      VaultsAllCacheKey,
+      VaultsAllCacheTime
+    );
+
+    reply.header("X-Cache-Hit", hit).send(allVaults);
   });
 }
