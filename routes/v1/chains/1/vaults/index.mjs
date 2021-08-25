@@ -7,7 +7,7 @@ const VaultsTokensCacheKey = "vaults.tokens";
 const VaultsTokensCacheTime = ms("10 minutes");
 
 export const VaultsAllCacheKey = "vaults.all";
-export const VaultsAllCacheTime = ms("10 minutes");
+export const VaultsAllCacheTime = ms("1 day");
 
 /**
  * @param {import("fastify").FastifyInstance} api

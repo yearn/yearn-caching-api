@@ -5,6 +5,8 @@ import { yearn } from "../plugins/sdk.mjs";
 import { cache } from "../plugins/caching.mjs";
 import { getVaultCacheKey } from "../routes/v1/chains/1/vaults/index.mjs";
 import { sendMessage } from "../telegram.mjs";
+import { VaultsAllCacheKey } from "../routes/v1/chains/1/vaults/index.mjs";
+import { VaultsAllCacheTime } from "../routes/v1/chains/1/vaults/index.mjs";
 
 const setVaults = async () => {
   try {
@@ -42,7 +44,7 @@ const setOldApi = async () => {
     throw new Error(errorMessage);
   }
   const json = await response.json();
-  cache.set("vaults.all", json, ms("1 day"));
+  cache.set(VaultsAllCacheKey, json, VaultsAllCacheTime);
 };
 
 (async () => {
