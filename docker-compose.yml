@@ -11,6 +11,8 @@ services:
     environment:
       PORT: 3000
       WEB3_HTTP_PROVIDER: ${WEB3_HTTP_PROVIDER}
+      TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID}
+      TELEGRAM_BOT_ID: ${TELEGRAM_BOT_ID}
     logging:
       driver: "json-file"
       options:
