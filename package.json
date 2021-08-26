@@ -39,7 +39,7 @@
     "@ethersproject/contracts": "^5.4.0",
     "@ethersproject/providers": "^5.4.2",
     "@ladjs/graceful": "^1.0.5",
-    "@yfi/sdk": "file:.yalc/@yfi/sdk",
+    "@yfi/sdk": "^0.0.45",
     "abstract-cache": "^1.0.1",
     "abstract-cache-redis": "^2.0.0",
     "bree": "^6.2.1",
