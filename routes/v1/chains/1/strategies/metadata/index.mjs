@@ -9,7 +9,7 @@ export const StrategiesMetadataGetCacheTime = ms("10 minutes");
 export default async function (api) {
   api.get("/get", async (request, reply) => {
     let [hit, strategies] = await api.helpers.cachedCall(
-      () => api.sdk.strategies.dataForVaults(),
+      () => api.sdk.strategies.vaultsStrategiesMetadata(),
       StrategiesMetadataGetCacheKey,
       StrategiesMetadataGetCacheTime
     );

@@ -4,7 +4,7 @@ import { StrategiesMetadataGetCacheTime } from "../routes/v1/chains/1/strategies
 import { StrategiesMetadataGetCacheKey } from "../routes/v1/chains/1/strategies/metadata/index.mjs";
 
 (async () => {
-  const strategies = await yearn.strategies.dataForVaults();
+  const strategies = await yearn.strategies.vaultsStrategiesMetadata();
   if (strategies.length !== 0) {
     cache.set(StrategiesMetadataGetCacheKey, strategies, StrategiesMetadataGetCacheTime);
   }
