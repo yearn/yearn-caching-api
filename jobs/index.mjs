@@ -11,4 +11,9 @@ export default [
     interval: "7m",
     timeout: 0,
   },
+  {
+    name: "earnings",
+    interval: "7m",
+    timeout: 0,
+  },
 ];
