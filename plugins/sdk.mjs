@@ -5,7 +5,7 @@ import { JsonRpcProvider } from "@ethersproject/providers";
 
 const provider = new JsonRpcProvider(process.env.WEB3_HTTP_PROVIDER);
 
-export const yearn = new Yearn(1, { provider });
+export const yearn = new Yearn(1, { provider, cache: { useCache: false } });
 
 /**
  * This plugins adds an SDK instance to the fastify object

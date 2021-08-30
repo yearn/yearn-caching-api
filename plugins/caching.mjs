@@ -20,6 +20,7 @@ export const cache = cacheConfig({
 export default fp(async function (api) {
   api.register(await import("fastify-caching"), {
     cache: cache,
+    expiresIn: 30,
     // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control#cacheability
     privacy: "public",
   });
