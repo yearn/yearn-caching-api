@@ -16,4 +16,9 @@ export default [
     interval: "7m",
     timeout: 0,
   },
+  {
+    name: "tokens",
+    interval: "7m",
+    timeout: 0,
+  },
 ];
