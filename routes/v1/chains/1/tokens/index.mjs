@@ -27,6 +27,14 @@ export default async function (api) {
       TokensMetadataCacheTime
     );
 
+    // filter by address
+    if (request.query.addresses) {
+      const addresses = request.query.addresses.toLowerCase().split(",");
+      metadata = metadata.filter((metadata) => {
+        return addresses.includes(metadata.address.toLowerCase());
+      });
+    }
+
     reply.header("X-Cache-Hit", hit).send(metadata);
   });
 }
