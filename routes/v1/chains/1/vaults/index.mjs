@@ -1,8 +1,8 @@
 import ms from "ms";
 import fetch from "cross-fetch";
 
-const VaultsGetCacheKey = "vaults.get";
-const VaultsGetCacheTime = ms("10 minutes");
+export const VaultsGetCacheKey = "vaults.get";
+export const VaultsGetCacheTime = ms("10 minutes");
 
 const VaultsTokensCacheKey = "vaults.tokens";
 const VaultsTokensCacheTime = ms("10 minutes");

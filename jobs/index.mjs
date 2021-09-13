@@ -3,10 +3,6 @@
  */
 export default [
   {
-    name: "hello",
-    interval: "1m",
-  },
-  {
     name: "strategies",
     interval: "7m",
     timeout: 0,
@@ -19,6 +15,11 @@ export default [
   {
     name: "tokens",
     interval: "7m",
+    timeout: 0,
+  },
+  {
+    name: "vaults",
+    interval: "6m",
     timeout: 0,
   },
 ];
