@@ -4,9 +4,9 @@ import { VaultsGetCacheTime } from "../routes/v1/chains/1/vaults/index.mjs";
 import { VaultsGetCacheKey } from "../routes/v1/chains/1/vaults/index.mjs";
 
 (async () => {
-  const metadata = await yearn.vaults.get();
-  if (metadata.length) {
-    cache.set(VaultsGetCacheKey, metadata, VaultsGetCacheTime);
+  const vaults = await yearn.vaults.get();
+  if (vaults.length) {
+    cache.set(VaultsGetCacheKey, vaults, VaultsGetCacheTime);
   }
   process.exit(0);
 })();
