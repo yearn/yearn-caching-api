@@ -1,23 +1,28 @@
 import ms from "ms";
 import fetch from "cross-fetch";
 
-export const VaultsGetCacheKey = "vaults.get";
+export const makeVaultsGetCacheKey = (chainId) => `vaults.get.${chainId}`;
 export const VaultsGetCacheTime = ms("10 minutes");
 
-const VaultsTokensCacheKey = "vaults.tokens";
+const makeVaultsTokensCacheKey = (chainId) => `vaults.tokens.${chainId}`;
 const VaultsTokensCacheTime = ms("10 minutes");
 
-const VaultsAllCacheKey = "vaults.all";
+const makeVaultsAllCacheKey = (chainId) => `vaults.all.${chainId}`;
 const VaultsAllCacheTime = ms("10 minutes");
 
 /**
  * @param {import("fastify").FastifyInstance} api
  */
 export default async function (api) {
-  api.get("/get", async (request, reply) => {
+  const schema = api.getSchema("chainIdParam");
+
+  api.get("/get", { schema }, async (request, reply) => {
+    const chainId = request.params.chainId;
+    const sdk = api.getSdk(chainId);
+
     let [hit, vaults] = await api.helpers.cachedCall(
-      () => api.sdk.vaults.get(),
-      VaultsGetCacheKey,
+      () => sdk.vaults.get(),
+      makeVaultsGetCacheKey(chainId),
       VaultsGetCacheTime
     );
 
@@ -40,21 +45,28 @@ export default async function (api) {
     reply.header("X-Cache-Hit", hit).send(vaults);
   });
 
-  api.get("/tokens", async (_, reply) => {
+  api.get("/tokens", { schema }, async (request, reply) => {
+    const chainId = request.params.chainId;
+    const sdk = api.getSdk(chainId);
+
     let [hit, tokens] = await api.helpers.cachedCall(
-      () => api.sdk.vaults.tokens(),
-      VaultsTokensCacheKey,
+      () => sdk.vaults.tokens(),
+      makeVaultsTokensCacheKey(chainId),
       VaultsTokensCacheTime
     );
 
     reply.header("X-Cache-Hit", hit).send(tokens);
   });
 
-  api.get("/all", async (_, reply) => {
+  api.get("/all", { schema }, async (request, reply) => {
+    const chainId = request.params.chainId;
+
     let [hit, allVaults] = await api.helpers.cachedCall(
       () =>
-        fetch(`${process.env.API_MIGRATION_URL}/v1/chains/1/vaults/all`).then((res) => res.json()),
-      VaultsAllCacheKey,
+        fetch(`${process.env.API_MIGRATION_URL}/v1/chains/${chainId}/vaults/all`).then((res) =>
+          res.json()
+        ),
+      makeVaultsAllCacheKey(chainId),
       VaultsAllCacheTime
     );
 

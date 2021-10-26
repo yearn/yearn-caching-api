@@ -1,12 +1,20 @@
 import { cache } from "../plugins/caching.mjs";
-import { yearn } from "../plugins/sdk.mjs";
-import { StrategiesMetadataGetCacheTime } from "../routes/v1/chains/1/strategies/metadata/index.mjs";
-import { StrategiesMetadataGetCacheKey } from "../routes/v1/chains/1/strategies/metadata/index.mjs";
+import { sdks } from "../plugins/sdk.mjs";
+import { StrategiesMetadataGetCacheTime } from "../routes/v1/chains/:chainId/strategies/metadata/index.mjs";
+import { makeStrategiesMetadataGetCacheKey } from "../routes/v1/chains/:chainId/strategies/metadata/index.mjs";
+
+import { parentPort } from "worker_threads";
 
 (async () => {
-  const strategies = await yearn.strategies.vaultsStrategiesMetadata();
-  if (strategies.length) {
-    cache.set(StrategiesMetadataGetCacheKey, strategies, StrategiesMetadataGetCacheTime);
+  for (const [chainId, sdk] of Object.entries(sdks)) {
+    const strategies = await sdk.strategies.vaultsStrategiesMetadata();
+    if (strategies.length) {
+      cache.set(
+        makeStrategiesMetadataGetCacheKey(chainId),
+        strategies,
+        StrategiesMetadataGetCacheTime
+      );
+    }
   }
   process.exit(0);
 })();

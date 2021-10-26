@@ -11,6 +11,20 @@ import jobs from "./jobs/index.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
+const chainIdParamSchema = {
+  $id: "chainIdParam",
+  params: {
+    type: "object",
+    properties: {
+      chainId: {
+        type: "number",
+        enum: [1, 250],
+      },
+    },
+    required: ["chainId"],
+  },
+};
+
 /**
  * @param {import("fastify").FastifyInstance} fastify
  */
@@ -24,6 +38,8 @@ export default async function (fastify, opts) {
     dir: join(__dirname, "routes"),
     options: Object.assign({}, opts),
   });
+
+  fastify.addSchema(chainIdParamSchema);
 
   // bree needs at least one job to work
   if (jobs.length > 0) {

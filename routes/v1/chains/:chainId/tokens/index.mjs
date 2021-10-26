@@ -1,29 +1,37 @@
 import ms from "ms";
 
-const TokensSupportedCacheKey = "tokens.supported";
-const TokensSupportedCacheTime = ms("10 minutes");
+export const makeTokensSupportedCacheKey = (chainId) => `tokens.supported.${chainId}`;
+export const TokensSupportedCacheTime = ms("10 minutes");
 
-export const TokensMetadataCacheKey = "tokens.metadata";
+export const makeTokensMetadataCacheKey = (chainId) => `tokens.metadata.${chainId}`;
 export const TokensMetadataCacheTime = ms("10 minutes");
 
 /**
  * @param {import("fastify").FastifyInstance} api
  */
 export default async function (api) {
-  api.get("/supported", async (_, reply) => {
+  const schema = api.getSchema("chainIdParam");
+
+  api.get("/supported", { schema }, async (request, reply) => {
+    const chainId = request.params.chainId;
+    const sdk = api.getSdk(chainId);
+
     let [hit, supported] = await api.helpers.cachedCall(
-      () => api.sdk.tokens.supported(),
-      TokensSupportedCacheKey,
+      () => sdk.tokens.supported(),
+      makeTokensSupportedCacheKey(chainId),
       TokensSupportedCacheTime
     );
 
     reply.header("X-Cache-Hit", hit).send(supported);
   });
 
-  api.get("/metadata", async (request, reply) => {
+  api.get("/metadata", { schema }, async (request, reply) => {
+    const chainId = request.params.chainId;
+    const sdk = api.getSdk(chainId);
+
     let [hit, metadata] = await api.helpers.cachedCall(
-      () => api.sdk.tokens.metadata(),
-      TokensMetadataCacheKey,
+      () => sdk.tokens.metadata(),
+      makeTokensMetadataCacheKey(chainId),
       TokensMetadataCacheTime
     );
 
