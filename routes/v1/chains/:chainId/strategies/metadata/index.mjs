@@ -1,16 +1,21 @@
 import ms from "ms";
 
-export const StrategiesMetadataGetCacheKey = "strategies.metadata.get";
+export const makeStrategiesMetadataGetCacheKey = (chainId) => `strategies.metadata.get.${chainId}`;
 export const StrategiesMetadataGetCacheTime = ms("10 minutes");
 
 /**
  * @param {import("fastify").FastifyInstance} api
  */
 export default async function (api) {
+  const schema = api.getSchema("chainIdParam");
+
   api.get("/get", async (request, reply) => {
+    const chainId = request.params.chainId;
+    const sdk = api.getSdk(chainId);
+
     let [hit, strategies] = await api.helpers.cachedCall(
-      () => api.sdk.strategies.vaultsStrategiesMetadata(),
-      StrategiesMetadataGetCacheKey,
+      () => sdk.strategies.vaultsStrategiesMetadata(),
+      makeStrategiesMetadataGetCacheKey(chainId),
       StrategiesMetadataGetCacheTime
     );
 

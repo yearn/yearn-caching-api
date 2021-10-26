@@ -1,16 +1,21 @@
 import ms from "ms";
 
-export const VaultsEarningsCacheKey = "vaults.earnings.get";
+export const makeVaultsEarningsCacheKey = (chainId) => `vaults.earnings.get.${chainId}`;
 export const VaultsEarningsCacheTime = ms("10 minutes");
 
 /**
  * @param {import("fastify").FastifyInstance} api
  */
 export default async function (api) {
-  api.get("/get", async (request, reply) => {
+  const schema = api.getSchema("chainIdParam");
+
+  api.get("/get", { schema }, async (request, reply) => {
+    const chainId = request.params.chainId;
+    const sdk = api.getSdk(chainId);
+
     let [hit, vaultsEarnings] = await api.helpers.cachedCall(
-      () => api.sdk.earnings.assetsHistoricEarnings(),
-      VaultsEarningsCacheKey,
+      () => sdk.earnings.assetsHistoricEarnings(),
+      makeVaultsEarningsCacheKey(chainId),
       VaultsEarningsCacheTime
     );
 

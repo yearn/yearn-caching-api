@@ -1,19 +1,24 @@
 import ms from "ms";
 
-const IronBankGetCacheKey = "ironbank.get";
+const makeIronBankGetCacheKey = (chainId) => `ironbank.get.${chainId}`;
 const IronBankGetCacheTime = ms("10 minutes");
 
-const IronBankTokensCacheKey = "ironbank.tokens";
+const makeIronBankTokensCacheKey = (chainId) => `ironbank.tokens.${chainId}`;
 const IronBankTokensCacheTime = ms("10 minutes");
 
 /**
  * @param {import("fastify").FastifyInstance} api
  */
 export default async function (api) {
+  const schema = api.getSchema("chainIdParam");
+
   api.get("/get", async (request, reply) => {
+    const chainId = request.params.chainId;
+    const sdk = api.getSdk(chainId);
+
     let [hit, vaults] = await api.helpers.cachedCall(
-      () => api.sdk.ironBank.get(),
-      IronBankGetCacheKey,
+      () => sdk.ironBank.get(),
+      makeIronBankGetCacheKey(chainId),
       IronBankGetCacheTime
     );
 
@@ -36,10 +41,13 @@ export default async function (api) {
     reply.header("X-Cache-Hit", hit).send(vaults);
   });
 
-  api.get("/tokens", async (_, reply) => {
+  api.get("/tokens", async (request, reply) => {
+    const chainId = request.params.chainId;
+    const sdk = api.getSdk(chainId);
+
     let [hit, tokens] = await api.helpers.cachedCall(
-      () => api.sdk.ironBank.tokens(),
-      IronBankTokensCacheKey,
+      () => sdk.ironBank.tokens(),
+      makeIronBankTokensCacheKey(chainId),
       IronBankTokensCacheTime
     );
 
