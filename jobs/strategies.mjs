@@ -3,8 +3,6 @@ import { sdks } from "../plugins/sdk.mjs";
 import { StrategiesMetadataGetCacheTime } from "../routes/v1/chains/:chainId/strategies/metadata/index.mjs";
 import { makeStrategiesMetadataGetCacheKey } from "../routes/v1/chains/:chainId/strategies/metadata/index.mjs";
 
-import { parentPort } from "worker_threads";
-
 (async () => {
   for (const [chainId, sdk] of Object.entries(sdks)) {
     const strategies = await sdk.strategies.vaultsStrategiesMetadata();

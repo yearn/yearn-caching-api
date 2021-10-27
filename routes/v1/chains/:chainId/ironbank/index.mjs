@@ -1,10 +1,10 @@
 import ms from "ms";
 
-const makeIronBankGetCacheKey = (chainId) => `ironbank.get.${chainId}`;
-const IronBankGetCacheTime = ms("10 minutes");
+export const makeIronBankGetCacheKey = (chainId) => `ironbank.get.${chainId}`;
+export const IronBankGetCacheTime = ms("10 minutes");
 
-const makeIronBankTokensCacheKey = (chainId) => `ironbank.tokens.${chainId}`;
-const IronBankTokensCacheTime = ms("10 minutes");
+export const makeIronBankTokensCacheKey = (chainId) => `ironbank.tokens.${chainId}`;
+export const IronBankTokensCacheTime = ms("10 minutes");
 
 /**
  * @param {import("fastify").FastifyInstance} api
