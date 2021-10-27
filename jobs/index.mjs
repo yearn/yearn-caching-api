@@ -22,4 +22,9 @@ export default [
     interval: "6m",
     timeout: 0,
   },
+  {
+    name: "ironbank",
+    interval: "8m",
+    timeout: 0,
+  },
 ];
