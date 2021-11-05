@@ -15,7 +15,7 @@ export const IronBankTokensCacheTime = ms("10 minutes");
 export default async function (api) {
   const schema = api.getSchema("chainIdParam");
 
-  api.get("/get", async (request, reply) => {
+  api.get("/get", { schema }, async (request, reply) => {
     const chainId = request.params.chainId;
     const sdk = api.getSdk(chainId);
 
@@ -44,7 +44,7 @@ export default async function (api) {
     reply.header("X-Cache-Hit", hit).send(vaults);
   });
 
-  api.get("/getDynamic", async (request, reply) => {
+  api.get("/getDynamic", { schema }, async (request, reply) => {
     const chainId = request.params.chainId;
     const sdk = api.getSdk(chainId);
 
@@ -65,7 +65,7 @@ export default async function (api) {
     reply.header("X-Cache-Hit", hit).send(vaults);
   });
 
-  api.get("/tokens", async (request, reply) => {
+  api.get("/tokens", { schema }, async (request, reply) => {
     const chainId = request.params.chainId;
     const sdk = api.getSdk(chainId);
 

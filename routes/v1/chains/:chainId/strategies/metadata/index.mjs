@@ -9,7 +9,7 @@ export const StrategiesMetadataGetCacheTime = ms("10 minutes");
 export default async function (api) {
   const schema = api.getSchema("chainIdParam");
 
-  api.get("/get", async (request, reply) => {
+  api.get("/get", { schema }, async (request, reply) => {
     const chainId = request.params.chainId;
     const sdk = api.getSdk(chainId);
 
