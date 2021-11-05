@@ -4,8 +4,11 @@ import fetch from "cross-fetch";
 export const makeVaultsGetCacheKey = (chainId) => `vaults.get.${chainId}`;
 export const VaultsGetCacheTime = ms("10 minutes");
 
-const makeVaultsTokensCacheKey = (chainId) => `vaults.tokens.${chainId}`;
-const VaultsTokensCacheTime = ms("10 minutes");
+export const makeVaultsGetDynamicCacheKey = (chainId) => `vaults.getDynamic.${chainId}`;
+export const VaultsGetDynamicCacheTime = ms("10 minutes");
+
+export const makeVaultsTokensCacheKey = (chainId) => `vaults.tokens.${chainId}`;
+export const VaultsTokensCacheTime = ms("10 minutes");
 
 const makeVaultsAllCacheKey = (chainId) => `vaults.all.${chainId}`;
 const VaultsAllCacheTime = ms("10 minutes");
@@ -39,6 +42,27 @@ export default async function (api) {
       const addresses = request.query.tokens.toLowerCase().split(",");
       vaults = vaults.filter((vault) => {
         return addresses.includes(vault.token.toLowerCase());
+      });
+    }
+
+    reply.header("X-Cache-Hit", hit).send(vaults);
+  });
+
+  api.get("/getDynamic", { schema }, async (request, reply) => {
+    const chainId = request.params.chainId;
+    const sdk = api.getSdk(chainId);
+
+    let [hit, vaults] = await api.helpers.cachedCall(
+      () => sdk.vaults.getDynamic(),
+      makeVaultsGetDynamicCacheKey(chainId),
+      VaultsGetDynamicCacheTime
+    );
+
+    // filter by address
+    if (request.query.addresses) {
+      const addresses = request.query.addresses.toLowerCase().split(",");
+      vaults = vaults.filter((vault) => {
+        return addresses.includes(vault.address.toLowerCase());
       });
     }
 
