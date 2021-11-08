@@ -6,12 +6,13 @@ async function cachedCall(call, key, ttl) {
   let value;
   if (hit) {
     const cache = await this.cache.get(key);
+    ttl = cache.ttl;
     value = cache.item;
   } else {
     value = await call();
     this.cache.set(key, value, ttl);
   }
-  return [hit, value];
+  return [hit, value, parseInt(ttl / 1000)];
 }
 
 /**

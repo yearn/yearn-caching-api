@@ -13,7 +13,7 @@ export default async function (api) {
     const chainId = request.params.chainId;
     const sdk = api.getSdk(chainId);
 
-    let [hit, vaultsEarnings] = await api.helpers.cachedCall(
+    let [hit, vaultsEarnings, ttl] = await api.helpers.cachedCall(
       () => sdk.earnings.assetsHistoricEarnings(),
       makeVaultsEarningsCacheKey(chainId),
       VaultsEarningsCacheTime
@@ -27,6 +27,9 @@ export default async function (api) {
       });
     }
 
-    reply.header("X-Cache-Hit", hit).send(vaultsEarnings);
+    reply
+      .header("X-Cache-Hit", hit)
+      .header("Cache-Control", `public, max-age=${ttl}`)
+      .send(vaultsEarnings);
   });
 }

@@ -16,20 +16,23 @@ export default async function (api) {
     const chainId = request.params.chainId;
     const sdk = api.getSdk(chainId);
 
-    let [hit, supported] = await api.helpers.cachedCall(
+    let [hit, supported, ttl] = await api.helpers.cachedCall(
       () => sdk.tokens.supported(),
       makeTokensSupportedCacheKey(chainId),
       TokensSupportedCacheTime
     );
 
-    reply.header("X-Cache-Hit", hit).send(supported);
+    reply
+      .header("X-Cache-Hit", hit)
+      .header("Cache-Control", `public, max-age=${ttl}`)
+      .send(supported);
   });
 
   api.get("/metadata", { schema }, async (request, reply) => {
     const chainId = request.params.chainId;
     const sdk = api.getSdk(chainId);
 
-    let [hit, metadata] = await api.helpers.cachedCall(
+    let [hit, metadata, ttl] = await api.helpers.cachedCall(
       () => sdk.tokens.metadata(),
       makeTokensMetadataCacheKey(chainId),
       TokensMetadataCacheTime
@@ -43,6 +46,9 @@ export default async function (api) {
       });
     }
 
-    reply.header("X-Cache-Hit", hit).send(metadata);
+    reply
+      .header("X-Cache-Hit", hit)
+      .header("Cache-Control", `public, max-age=${ttl}`)
+      .send(metadata);
   });
 }

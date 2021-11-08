@@ -13,7 +13,7 @@ export default async function (api) {
     const chainId = request.params.chainId;
     const sdk = api.getSdk(chainId);
 
-    let [hit, strategies] = await api.helpers.cachedCall(
+    let [hit, strategies, ttl] = await api.helpers.cachedCall(
       () => sdk.strategies.vaultsStrategiesMetadata(),
       makeStrategiesMetadataGetCacheKey(chainId),
       StrategiesMetadataGetCacheTime
@@ -27,6 +27,9 @@ export default async function (api) {
       });
     }
 
-    reply.header("X-Cache-Hit", hit).send(strategies);
+    reply
+      .header("X-Cache-Hit", hit)
+      .header("Cache-Control", `public, max-age=${ttl}`)
+      .send(strategies);
   });
 }
