@@ -19,7 +19,7 @@ export default async function (api) {
     const chainId = request.params.chainId;
     const sdk = api.getSdk(chainId);
 
-    let [hit, vaults] = await api.helpers.cachedCall(
+    let [hit, vaults, ttl] = await api.helpers.cachedCall(
       () => sdk.ironBank.get(),
       makeIronBankGetCacheKey(chainId),
       IronBankGetCacheTime
@@ -41,14 +41,14 @@ export default async function (api) {
       });
     }
 
-    reply.header("X-Cache-Hit", hit).send(vaults);
+    reply.header("X-Cache-Hit", hit).header("Cache-Control", `public, max-age=${ttl}`).send(vaults);
   });
 
   api.get("/getDynamic", { schema }, async (request, reply) => {
     const chainId = request.params.chainId;
     const sdk = api.getSdk(chainId);
 
-    let [hit, vaults] = await api.helpers.cachedCall(
+    let [hit, vaults, ttl] = await api.helpers.cachedCall(
       () => sdk.ironBank.getDynamic(),
       makeIronBankGetDynamicCacheKey(chainId),
       IronBankGetDynamicCacheTime
@@ -62,19 +62,19 @@ export default async function (api) {
       });
     }
 
-    reply.header("X-Cache-Hit", hit).send(vaults);
+    reply.header("X-Cache-Hit", hit).header("Cache-Control", `public, max-age=${ttl}`).send(vaults);
   });
 
   api.get("/tokens", { schema }, async (request, reply) => {
     const chainId = request.params.chainId;
     const sdk = api.getSdk(chainId);
 
-    let [hit, tokens] = await api.helpers.cachedCall(
+    let [hit, tokens, ttl] = await api.helpers.cachedCall(
       () => sdk.ironBank.tokens(),
       makeIronBankTokensCacheKey(chainId),
       IronBankTokensCacheTime
     );
 
-    reply.header("X-Cache-Hit", hit).send(tokens);
+    reply.header("X-Cache-Hit", hit).header("Cache-Control", `public, max-age=${ttl}`).send(tokens);
   });
 }

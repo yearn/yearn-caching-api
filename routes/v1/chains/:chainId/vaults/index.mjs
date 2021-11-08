@@ -23,7 +23,7 @@ export default async function (api) {
     const chainId = request.params.chainId;
     const sdk = api.getSdk(chainId);
 
-    let [hit, vaults] = await api.helpers.cachedCall(
+    let [hit, vaults, ttl] = await api.helpers.cachedCall(
       () => sdk.vaults.get(),
       makeVaultsGetCacheKey(chainId),
       VaultsGetCacheTime
@@ -45,14 +45,14 @@ export default async function (api) {
       });
     }
 
-    reply.header("X-Cache-Hit", hit).send(vaults);
+    reply.header("X-Cache-Hit", hit).header("Cache-Control", `public, max-age=${ttl}`).send(vaults);
   });
 
   api.get("/getDynamic", { schema }, async (request, reply) => {
     const chainId = request.params.chainId;
     const sdk = api.getSdk(chainId);
 
-    let [hit, vaults] = await api.helpers.cachedCall(
+    let [hit, vaults, ttl] = await api.helpers.cachedCall(
       () => sdk.vaults.getDynamic(),
       makeVaultsGetDynamicCacheKey(chainId),
       VaultsGetDynamicCacheTime
@@ -66,26 +66,26 @@ export default async function (api) {
       });
     }
 
-    reply.header("X-Cache-Hit", hit).send(vaults);
+    reply.header("X-Cache-Hit", hit).header("Cache-Control", `public, max-age=${ttl}`).send(vaults);
   });
 
   api.get("/tokens", { schema }, async (request, reply) => {
     const chainId = request.params.chainId;
     const sdk = api.getSdk(chainId);
 
-    let [hit, tokens] = await api.helpers.cachedCall(
+    let [hit, tokens, ttl] = await api.helpers.cachedCall(
       () => sdk.vaults.tokens(),
       makeVaultsTokensCacheKey(chainId),
       VaultsTokensCacheTime
     );
 
-    reply.header("X-Cache-Hit", hit).send(tokens);
+    reply.header("X-Cache-Hit", hit).header("Cache-Control", `public, max-age=${ttl}`).send(tokens);
   });
 
   api.get("/all", { schema }, async (request, reply) => {
     const chainId = request.params.chainId;
 
-    let [hit, allVaults] = await api.helpers.cachedCall(
+    let [hit, allVaults, ttl] = await api.helpers.cachedCall(
       () =>
         fetch(`${process.env.API_MIGRATION_URL}/v1/chains/${chainId}/vaults/all`).then((res) =>
           res.json()
@@ -94,6 +94,9 @@ export default async function (api) {
       VaultsAllCacheTime
     );
 
-    reply.header("X-Cache-Hit", hit).send(allVaults);
+    reply
+      .header("X-Cache-Hit", hit)
+      .header("Cache-Control", `public, max-age=${ttl}`)
+      .send(allVaults);
   });
 }
