@@ -1,0 +1,63 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yearn-api-deployment
+  labels:
+    app: yearn-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: yearn-api
+  template:
+    metadata:
+      labels:
+        app: yearn-api
+    spec:
+      containers:
+      - name: api
+        image: cloudguyit/yearn-api:latest
+        args:
+        - yarn
+        - $(INIT_ARG)
+        env:
+        - name: INIT_ARG
+          value: "dev"
+        - name: PORT
+          value: "3000"
+        - name: WEB3_HTTP_PROVIDER
+          value: "https://eth-mainnet.alchemyapi.io/v2/<key>"
+        - name: REDIS_SERVICE_HOSTNAME
+          value: $(YEARN_REDIS_PRIMARY_SERVICE_HOST)
+        ports:
+        - containerPort: 3000
+        readinessProbe:
+          periodSeconds: 5
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 5
+          tcpSocket:
+            port: 3000
+        livenessProbe:
+          periodSeconds: 5
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 5
+          tcpSocket:
+            port: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: yearn-api-service
+  labels:
+    app: yearn-api
+spec:
+  type: ClusterIP
+  ports:
+    - name: api
+      port: 3000
+      targetPort: 3000
+  selector:
+    app: yearn-api

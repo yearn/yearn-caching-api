@@ -1,0 +1,92 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-yearn-redis-primary
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 0.3Gi
+  hostPath:
+    path: /data/yearn-redis-primary
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-yearn-redis-primary
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteOnce 
+  volumeName: pv-yearn-redis-primary
+  resources:
+    requests:
+      storage: 0.3G
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yearn-redis-primary
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: yearn-redis-primary
+  template:
+    metadata:
+      labels:
+        app: yearn-redis-primary
+    spec:
+      subdomain: primary
+      containers:
+      - name: redis
+        image: redis:6.2.6-alpine
+        command:
+          - "redis-server"
+        args:
+          - "--protected-mode"
+          - "no"
+        ports:
+        - containerPort: 6379
+        volumeMounts:
+        - name: "yearn-redis-primary-volume"
+          mountPath: "/data"
+        readinessProbe:
+          periodSeconds: 5
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 5
+          tcpSocket:
+            port: 6379
+        livenessProbe:
+          periodSeconds: 5
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 5
+          tcpSocket:
+            port: 6379
+        resources:
+          limits:
+            memory: 256Mi
+            cpu: 125m
+          requests:
+            cpu: 70m
+            memory: 200Mi
+      volumes:
+      - name: "yearn-redis-primary-volume"
+        persistentVolumeClaim:
+          claimName: "pvc-yearn-redis-primary"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: yearn-redis-primary
+spec:
+  type: ClusterIP
+  selector:
+    app: yearn-redis-primary
+  ports:
+  - name: redis
+    port: 6379
+    targetPort: 6379
