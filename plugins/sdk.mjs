@@ -12,7 +12,11 @@ const providerForChain = (chain) => {
     case 1:
       return new JsonRpcProvider(process.env.WEB3_HTTP_PROVIDER);
     case 250:
-      return new JsonRpcProvider("https://rpc.ftm.tools/");
+      return new JsonRpcProvider({
+        url: process.env.WEB3_HTTP_PROVIDER_FTM_URL,
+        user: process.env.WEB3_HTTP_PROVIDER_FTM_USERNAME,
+        password: process.env.WEB3_HTTP_PROVIDER_FTM_PASSWORD,
+      });
   }
 };
 
