@@ -47,6 +47,10 @@ export default async function (fastify, opts) {
       logger: fastify.log,
       defaultExtension: "mjs", // i'm a unicorn,
       jobs: jobs,
+      errorHandler: (error, metadata) => {
+        console.log(error);
+        console.log(metadata);
+      },
     });
     const graceful = new Graceful({ brees: [bree] });
     graceful.listen();

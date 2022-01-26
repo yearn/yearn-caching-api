@@ -19,9 +19,21 @@ import {
       cache.set(makeVaultsGetCacheKey(chainId), vaults, VaultsGetCacheTime);
     }
 
-    const vaultsDynamic = await sdk.vaults.getDynamic();
-    if (vaultsDynamic.length) {
-      cache.set(makeVaultsGetDynamicCacheKey(chainId), vaultsDynamic, VaultsGetDynamicCacheTime);
+    const assetsStatic = await sdk.vaults.getStatic();
+    const assetsAddresses = assetsStatic.map((asset) => asset.address);
+    const size = 20;
+    let vaultsDynamicResult = [];
+    for (let i = 0; i < assetsAddresses.length; i += size) {
+      let chunk = assetsAddresses.slice(i, i + size);
+      const vaultsDynamic = await sdk.vaults.getDynamic(chunk);
+      vaultsDynamicResult.push(vaultsDynamic);
+    }
+    if (vaultsDynamicResult.length) {
+      cache.set(
+        makeVaultsGetDynamicCacheKey(chainId),
+        vaultsDynamicResult,
+        VaultsGetDynamicCacheTime
+      );
     }
 
     const tokens = await sdk.vaults.tokens();
