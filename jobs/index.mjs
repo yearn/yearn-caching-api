@@ -5,26 +5,26 @@ export default [
   {
     name: "strategies",
     interval: "7m",
-    timeout: 0,
+    timeout: 5000,
   },
   {
     name: "earnings",
     interval: "7m",
-    timeout: 0,
+    timeout: 10000,
   },
   {
     name: "tokens",
     interval: "7m",
-    timeout: 0,
+    timeout: 15000,
   },
   {
     name: "vaults",
     interval: "6m",
-    timeout: 0,
+    timeout: 20000,
   },
   {
     name: "ironbank",
     interval: "8m",
-    timeout: 0,
+    timeout: 25000,
   },
 ];

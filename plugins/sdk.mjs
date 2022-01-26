@@ -21,10 +21,18 @@ export const makeSdksWithCachedState = async () => {
   for (const chain of chains) {
     const stateKey = `assetServiceState.${chain}`;
     const cachedState = await cache.get(stateKey);
-    let state = AssetService.deserializeState(cachedState.item);
-    const provider = providerForChain(chain);
-    const sdk = new Yearn(chain, { provider, cache: { useCache: false } }, state);
-    sdks[chain] = sdk;
+    if (cachedState) {
+      let state = AssetService.deserializeState(cachedState.item);
+      const provider = providerForChain(chain);
+      await provider.ready;
+      const sdk = new Yearn(chain, { provider, cache: { useCache: false } }, state);
+      sdks[chain] = sdk;
+    } else {
+      const provider = providerForChain(chain);
+      await provider.ready;
+      const sdk = new Yearn(chain, { provider, cache: { useCache: false } });
+      sdks[chain] = sdk;
+    }
   }
   return sdks;
 };
