@@ -29,6 +29,16 @@ const chainIdParamSchema = {
  * @param {import("fastify").FastifyInstance} fastify
  */
 export default async function (fastify, opts) {
+  fastify.setNotFoundHandler({}, function (request, reply) {
+    const { url, method } = request.raw;
+    const message = `Route ${method}:${url} not found`;
+    reply.code(404).send({
+      message,
+      error: "Not Found",
+      statusCode: 404,
+    });
+  });
+
   fastify.register(AutoLoad, {
     dir: join(__dirname, "plugins"),
     options: Object.assign({}, opts),

@@ -4,3 +4,24 @@ services:
     build: .
     command: yarn start
     volumes: []
+  grafana-agent:
+    image: grafana/agent:latest
+    volumes:
+      - /tmp/agent-1:/tmp/agent
+      - ./agent/config:/etc/agent-config
+    environment:
+      REMOTE_WRITE: ${REMOTE_WRITE}
+      REMOTE_WRITE_PASSWORD: ${REMOTE_WRITE_PASSWORD}
+
+    entrypoint:
+      - /bin/agent
+      - -config.file=/etc/agent-config/agent.yaml
+      - -prometheus.wal-directory=/tmp/agent/wal
+      - -config.expand-env
+      - -config.enable-read-api
+
+    ports:
+      - "12345:12345"
+
+    depends_on:
+      - api
