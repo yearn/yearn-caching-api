@@ -12,7 +12,11 @@ const providerForChain = (chain) => {
     case 1:
       return new JsonRpcProvider(process.env.WEB3_HTTP_PROVIDER);
     case 250:
-      return new JsonRpcProvider("https://rpc.ftm.tools/");
+      return new JsonRpcProvider({
+        url: process.env.WEB3_HTTP_PROVIDER_FTM_URL,
+        user: process.env.WEB3_HTTP_PROVIDER_FTM_USERNAME,
+        password: process.env.WEB3_HTTP_PROVIDER_FTM_PASSWORD,
+      });
   }
 };
 
@@ -21,10 +25,18 @@ export const makeSdksWithCachedState = async () => {
   for (const chain of chains) {
     const stateKey = `assetServiceState.${chain}`;
     const cachedState = await cache.get(stateKey);
-    let state = AssetService.deserializeState(cachedState.item);
-    const provider = providerForChain(chain);
-    const sdk = new Yearn(chain, { provider, cache: { useCache: false } }, state);
-    sdks[chain] = sdk;
+    if (cachedState) {
+      let state = AssetService.deserializeState(cachedState.item);
+      const provider = providerForChain(chain);
+      await provider.ready;
+      const sdk = new Yearn(chain, { provider, cache: { useCache: false } }, state);
+      sdks[chain] = sdk;
+    } else {
+      const provider = providerForChain(chain);
+      await provider.ready;
+      const sdk = new Yearn(chain, { provider, cache: { useCache: false } });
+      sdks[chain] = sdk;
+    }
   }
   return sdks;
 };
