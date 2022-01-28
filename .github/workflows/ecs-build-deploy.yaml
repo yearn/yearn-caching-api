@@ -54,5 +54,5 @@ jobs:
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
           cluster: yearn-api-cluster
-          service: YearnAPIStackYearnAPIECSStack13F1815E-YearnAPIFargateService993AD1B6-91wpzCEln1Dm
+          service: YearnAPIStackYearnAPIECSStack13F1815E-YearnAPIFargateService993AD1B6-EdXmPJUwC2D4
           wait-for-service-stability: true
