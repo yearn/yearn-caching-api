@@ -10,8 +10,8 @@
   },
   "scripts": {
     "test": "tap \"test/**/*.test.mjs\"",
-    "start": "fastify start -l info app.mjs",
-    "dev": "fastify start -w -l info -P app.mjs",
+    "start": "fastify start -l info app.mjs --options",
+    "dev": "fastify  start -w -l info -P app.mjs --options",
     "lint": "eslint **/**.mjs"
   },
   "prettier": {
@@ -45,7 +45,7 @@
     "bree": "^6.2.1",
     "cross-fetch": "^3.1.4",
     "dotenv": "^10.0.0",
-    "fastify": "^3.0.0",
+    "fastify": "^3.27.0",
     "fastify-autoload": "^3.3.1",
     "fastify-caching": "^6.1.0",
     "fastify-cli": "^2.13.0",
