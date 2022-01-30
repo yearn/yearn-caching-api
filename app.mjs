@@ -28,7 +28,7 @@ const chainIdParamSchema = {
 /**
  * @param {import("fastify").FastifyInstance} fastify
  */
-export default async function (fastify, opts) {
+export async function server(fastify, opts) {
   fastify.setNotFoundHandler({}, function (request, reply) {
     const { url, method } = request.raw;
     const message = `Route ${method}:${url} not found`;
@@ -67,3 +67,11 @@ export default async function (fastify, opts) {
     bree.start();
   }
 }
+
+const REQUEST_TIMEOUT = parseInt(process.env.REQUEST_TIMEOUT || "1000", 10);
+
+server.options = {
+  requestTimeout: REQUEST_TIMEOUT,
+};
+
+export default server;

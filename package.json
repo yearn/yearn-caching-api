@@ -10,8 +10,8 @@
   },
   "scripts": {
     "test": "tap \"test/**/*.test.mjs\"",
-    "start": "fastify start -l info app.mjs",
-    "dev": "fastify start -w -l info -P app.mjs",
+    "start": "fastify start -l info app.mjs --options",
+    "dev": "fastify start -w -l info -P app.mjs --options",
     "lint": "eslint **/**.mjs"
   },
   "prettier": {
