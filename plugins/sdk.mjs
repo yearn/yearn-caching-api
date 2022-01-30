@@ -29,12 +29,20 @@ export const makeSdksWithCachedState = async () => {
       let state = AssetService.deserializeState(cachedState.item);
       const provider = providerForChain(chain);
       await provider.ready;
-      const sdk = new Yearn(chain, { provider, cache: { useCache: false } }, state);
+      const sdk = new Yearn(
+        chain,
+        { provider, cache: { useCache: false }, disableAllowlist: true },
+        state
+      );
       sdks[chain] = sdk;
     } else {
       const provider = providerForChain(chain);
       await provider.ready;
-      const sdk = new Yearn(chain, { provider, cache: { useCache: false } });
+      const sdk = new Yearn(chain, {
+        provider,
+        cache: { useCache: false },
+        disableAllowlist: true,
+      });
       sdks[chain] = sdk;
     }
   }
@@ -45,7 +53,7 @@ const makeSdks = () => {
   let sdks = {};
   for (const chain of chains) {
     const provider = providerForChain(chain);
-    const sdk = new Yearn(chain, { provider, cache: { useCache: false } });
+    const sdk = new Yearn(chain, { provider, cache: { useCache: false }, disableAllowlist: true });
     sdks[chain] = sdk;
   }
   return sdks;
