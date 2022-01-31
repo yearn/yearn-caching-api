@@ -4,7 +4,7 @@ services:
     build: .
     command: yarn dev
     ports:
-      - "3004:3004"
+      - "${PORT:-3004}:${PORT:-3004}"
     volumes:
       - ./routes:/app/routes
       - ./plugins:/app/plugins
