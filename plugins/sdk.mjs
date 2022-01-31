@@ -7,6 +7,10 @@ import ms from "ms";
 
 const chains = [1, 250];
 
+const makeAssetStateKey = (chain) => {
+  return `assetServiceState.${chain}`;
+};
+
 const providerForChain = (chain) => {
   switch (chain) {
     case 1:
@@ -20,40 +24,11 @@ const providerForChain = (chain) => {
   }
 };
 
-export const makeSdksWithCachedState = async () => {
-  let sdks = {};
-  for (const chain of chains) {
-    const stateKey = `assetServiceState.${chain}`;
-    const cachedState = await cache.get(stateKey);
-    if (cachedState) {
-      let state = AssetService.deserializeState(cachedState.item);
-      const provider = providerForChain(chain);
-      await provider.ready;
-      const sdk = new Yearn(
-        chain,
-        { provider, cache: { useCache: false }, disableAllowlist: true },
-        state
-      );
-      sdks[chain] = sdk;
-    } else {
-      const provider = providerForChain(chain);
-      await provider.ready;
-      const sdk = new Yearn(chain, {
-        provider,
-        cache: { useCache: false },
-        disableAllowlist: true,
-      });
-      sdks[chain] = sdk;
-    }
-  }
-  return sdks;
-};
-
 const makeSdks = () => {
   let sdks = {};
   for (const chain of chains) {
     const provider = providerForChain(chain);
-    const sdk = new Yearn(chain, { provider, cache: { useCache: false }, disableAllowlist: true });
+    const sdk = new Yearn(chain, { provider, cache: { useCache: false } });
     sdks[chain] = sdk;
   }
   return sdks;
@@ -61,8 +36,42 @@ const makeSdks = () => {
 
 const populateSdkAssetCache = async (sdk, chain) => {
   const state = await sdk.services.asset.makeSerializedState();
-  const key = `assetServiceState.${chain}`;
-  cache.set(key, state, ms("99 years"));
+  const key = makeAssetStateKey(chain);
+  // This duration shouldn't be too long, otherwise, for example, when icons for a new vault are
+  // created and uploaded to Github, they won't be fetched until the api is restarted.
+  cache.set(key, state, ms("4 hours"));
+};
+
+/**
+ * Creates an SDK instance for each chain, with an attempt to use cached asset service state.
+ * This is necessary because instantiating the SDK fetches asset information from Github.
+ * Since each job instantiates a fresh instance of the SDK and these are run frequently, it
+ * is possible to be rate limited by Github.
+ * @returns A dictionary of chain ids to a corresponding instance of the SDK
+ */
+export const makeSdksWithCachedState = async () => {
+  let sdks = {};
+  for (const chain of chains) {
+    const stateKey = makeAssetStateKey(chain);
+    const provider = providerForChain(chain);
+    await provider.ready;
+
+    const cachedState = await cache.get(stateKey);
+
+    let sdk;
+    // If the asset service state has been cached, then pass it through to the SDK to prevent
+    // it being fetched from Github. Otherwise, instantiate the SDK without it, and populate the
+    // asset service state cache.
+    if (cachedState) {
+      let state = AssetService.deserializeState(cachedState.item);
+      sdk = new Yearn(chain, { provider, cache: { useCache: false } }, state);
+    } else {
+      sdk = new Yearn(chain, { provider, cache: { useCache: false } });
+      populateSdkAssetCache(sdk, chain);
+    }
+    sdks[chain] = sdk;
+  }
+  return sdks;
 };
 
 /**
@@ -79,6 +88,9 @@ export default fp(async function (api) {
 
   api.decorate("getSdk", getSdk);
 
+  // When the SDKs are first created, wait for them to provide the asset service state
+  // and write it to the cache, so it can be used next time the SDK is instantiated,
+  // for example, when the jobs are run.
   const assetCachePromises = [];
 
   for (const [chain, sdk] of Object.entries(sdks)) {
