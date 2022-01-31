@@ -43,7 +43,7 @@ const populateSdkAssetCache = async (sdk, chain) => {
 };
 
 /**
- * Creates a SDK instance for each chain, with an attempt to use cached asset service state.
+ * Creates an SDK instance for each chain, with an attempt to use cached asset service state.
  * This is necessary because instantiating the SDK fetches asset information from Github.
  * Since each job instantiates a fresh instance of the SDK and these are run frequently, it
  * is possible to be rate limited by Github.
