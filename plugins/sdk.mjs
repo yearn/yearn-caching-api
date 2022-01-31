@@ -60,7 +60,7 @@ export const makeSdksWithCachedState = async () => {
 
     let sdk;
     // If the asset service state has been cached, then pass it through to the SDK to prevent
-    // it being fetched from Github, otherwise instantiate the SDK without it, and populate the
+    // it being fetched from Github. Otherwise, instantiate the SDK without it, and populate the
     // asset service state cache.
     if (cachedState) {
       let state = AssetService.deserializeState(cachedState.item);
