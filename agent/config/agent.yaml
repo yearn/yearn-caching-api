@@ -1,7 +1,3 @@
-# agent-integrations-next.yaml is intended to be used with
-# docker-compose.integrations-next.yaml. It demonstrates a config with
-# --enable-features=integrations-next and --config.expand-env, but does not
-# test absolutely all integrations.
 server:
   log_level: info
   http_listen_port: 12345
@@ -14,7 +10,7 @@ metrics:
     remote_write:
     - url: ${REMOTE_WRITE}
       basic_auth:
-        username: 313390
+        username: ${REMOTE_WRITE_USERNAME}
         password: ${REMOTE_WRITE_PASSWORD}
 
   configs:
@@ -22,5 +18,5 @@ metrics:
       scrape_configs:
         - job_name: yearnapi
           static_configs:
-            - targets: ['api:3000']
+            - targets: ['api:${PORT}']
 

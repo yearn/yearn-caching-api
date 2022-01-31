@@ -9,7 +9,7 @@ services:
       - ./routes:/app/routes
       - ./plugins:/app/plugins
     environment:
-      PORT: 3004
+      PORT: ${PORT:-3004}
       REQUEST_TIMEOUT: ${REQUEST_TIMEOUT}
       WEB3_HTTP_PROVIDER: ${WEB3_HTTP_PROVIDER}
       WEB3_HTTP_PROVIDER_FTM_URL: ${WEB3_HTTP_PROVIDER_FTM_URL}

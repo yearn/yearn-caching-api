@@ -1,7 +1,8 @@
 import fp from "fastify-plugin";
 
 /**
- * This plugins allows manipulation of cors headers
+ * This plugins allows us to expose the metrics endpoint fo
+ * prometheus scraping.
  *
  * @see https://github.com/fastify/fastify-metrics
  */
