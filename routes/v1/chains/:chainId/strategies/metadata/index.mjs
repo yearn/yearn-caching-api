@@ -23,7 +23,7 @@ export default async function (api) {
     if (request.query.addresses) {
       const addresses = request.query.addresses.toLowerCase().split(",");
       strategies = strategies.filter((strategy) => {
-        return addresses.includes(strategy.address.toLowerCase());
+        return addresses.includes(strategy.vaultAddress.toLowerCase());
       });
     }
 
