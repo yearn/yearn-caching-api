@@ -34,11 +34,13 @@ export async function server(fastify, opts) {
     dsn: process.env.SENTRY_DSN,
     environment: process.env.NODE_ENV || "development"
   });
-  fastify.setErrorHandler(async function(err, request, reply) {
+  fastify.setErrorHandler(function(err, request, reply) {
     Sentry.withScope(scope => {
-        scope.setUser({
+        if (request.raw.ip) {
+          scope.setUser({
             ip_address: request.raw.ip
-        });
+          });
+        };
         scope.setTag("path", request.raw.url);
         Sentry.captureException(err);
     });
