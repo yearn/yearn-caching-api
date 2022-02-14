@@ -6,7 +6,7 @@ import "dotenv/config";
 import AutoLoad from "fastify-autoload";
 import Bree from "bree";
 import Graceful from "@ladjs/graceful";
-import * as Sentry from '@sentry/node';
+import * as Sentry from "@sentry/node";
 
 import jobs from "./jobs/index.mjs";
 
@@ -32,18 +32,19 @@ const chainIdParamSchema = {
 export async function server(fastify, opts) {
   Sentry.init({
     dsn: process.env.SENTRY_DSN,
-    environment: process.env.NODE_ENV || "development"
+    environment: process.env.NODE_ENV || "development",
   });
-  fastify.setErrorHandler(function(err, request, reply) {
-    Sentry.withScope(scope => {
-        if (request.raw.ip) {
-          scope.setUser({
-            ip_address: request.raw.ip
-          });
-        };
-        scope.setTag("path", request.raw.url);
-        Sentry.captureException(err);
+  fastify.setErrorHandler(function (err, request, reply) {
+    Sentry.withScope((scope) => {
+      if (request.raw.ip) {
+        scope.setUser({
+          ip_address: request.raw.ip,
+        });
+      }
+      scope.setTag("path", request.raw.url);
+      Sentry.captureException(err);
     });
+    return reply.send(err);
   });
   fastify.setNotFoundHandler({}, function (request, reply) {
     const { url, method } = request.raw;
@@ -74,7 +75,7 @@ export async function server(fastify, opts) {
       defaultExtension: "mjs", // i'm a unicorn,
       jobs: jobs,
       errorHandler: (error, metadata) => {
-        Sentry.captureException(error, metadata)
+        Sentry.captureException(error, metadata);
       },
     });
     const graceful = new Graceful({ brees: [bree] });
