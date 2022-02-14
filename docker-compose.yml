@@ -10,6 +10,7 @@ services:
       - ./plugins:/app/plugins
     environment:
       PORT: ${PORT:-3004}
+      NODE_ENV: ${NODE_ENV}
       REQUEST_TIMEOUT: ${REQUEST_TIMEOUT}
       WEB3_HTTP_PROVIDER: ${WEB3_HTTP_PROVIDER}
       WEB3_HTTP_PROVIDER_FTM_URL: ${WEB3_HTTP_PROVIDER_FTM_URL}
