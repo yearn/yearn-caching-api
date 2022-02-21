@@ -9,5 +9,17 @@ import fp from "fastify-plugin";
 export default fp(async function (api) {
   api.register(await import("fastify-metrics"), {
     endpoint: "/metrics",
+    enableDefaultMetrics: false,
+    enableRouteMetrics: true,
+    invalidRouteGroup: "not_found",
+    metrics: {
+      histogram: {
+        buckets: [],
+      },
+      summary: {
+        labelNames: ["status_code", "method", "route"],
+        percentiles: [0.9, 0.95],
+      },
+    },
   });
 });
