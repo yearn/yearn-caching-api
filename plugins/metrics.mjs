@@ -15,6 +15,7 @@ export default fp(async function (api) {
     metrics: {
       histogram: {
         buckets: [],
+        labelNames: ["route"],
       },
       summary: {
         labelNames: ["status_code", "method", "route"],
