@@ -19,7 +19,7 @@ const chainIdParamSchema = {
     properties: {
       chainId: {
         type: "number",
-        enum: [1, 250],
+        enum: [1, 250, 42161],
       },
     },
     required: ["chainId"],

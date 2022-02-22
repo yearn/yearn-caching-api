@@ -5,7 +5,7 @@ import { JsonRpcProvider } from "@ethersproject/providers";
 import { cache } from "./caching.mjs";
 import ms from "ms";
 
-const chains = [1, 250];
+const chains = [1, 250, 42161];
 
 const makeAssetStateKey = (chain) => {
   return `assetServiceState.${chain}`;
@@ -21,6 +21,8 @@ const providerForChain = (chain) => {
         user: process.env.WEB3_HTTP_PROVIDER_FTM_USERNAME,
         password: process.env.WEB3_HTTP_PROVIDER_FTM_PASSWORD,
       });
+    case 42161:
+      return new JsonRpcProvider(process.env.WEB3_HTTP_PROVIDER_ARB);
   }
 };
 
