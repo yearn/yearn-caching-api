@@ -19,8 +19,8 @@ export default [
   },
   {
     name: "vaults",
-    interval: "6m",
-    timeout: 20000,
+    interval: "7m",
+    timeout: 40000,
   },
   {
     name: "ironbank",

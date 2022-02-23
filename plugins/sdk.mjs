@@ -3,9 +3,8 @@ import fp from "fastify-plugin";
 import { Yearn, AssetService } from "@yfi/sdk";
 import { JsonRpcProvider } from "@ethersproject/providers";
 import { cache } from "./caching.mjs";
+import { CHAINS } from "../contants/chains.mjs";
 import ms from "ms";
-
-const chains = [1, 250];
 
 const makeAssetStateKey = (chain) => {
   return `assetServiceState.${chain}`;
@@ -21,12 +20,14 @@ const providerForChain = (chain) => {
         user: process.env.WEB3_HTTP_PROVIDER_FTM_USERNAME,
         password: process.env.WEB3_HTTP_PROVIDER_FTM_PASSWORD,
       });
+    case 42161:
+      return new JsonRpcProvider(process.env.WEB3_HTTP_PROVIDER_ARB);
   }
 };
 
 const makeSdks = () => {
   let sdks = {};
-  for (const chain of chains) {
+  for (const chain of CHAINS) {
     const provider = providerForChain(chain);
     const sdk = new Yearn(chain, { provider, disableAllowlist: true, cache: { useCache: false } });
     sdks[chain] = sdk;
@@ -51,7 +52,7 @@ const populateSdkAssetCache = async (sdk, chain) => {
  */
 export const makeSdksWithCachedState = async () => {
   let sdks = {};
-  for (const chain of chains) {
+  for (const chain of CHAINS) {
     const stateKey = makeAssetStateKey(chain);
     const provider = providerForChain(chain);
     await provider.ready;
