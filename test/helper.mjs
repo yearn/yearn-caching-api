@@ -11,6 +11,11 @@ export function config() {
 export function build(t) {
   const api = Fastify();
   api.register(fp(App), config());
-  t.teardown(api.close.bind(api));
+  t.teardown(() => {
+    api.bree.stop(); // kill bree jobs or else they cause tests to run forever/timeout
+    api.close();
+  });
   return api;
 }
+
+
