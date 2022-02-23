@@ -81,6 +81,7 @@ export async function server(fastify, opts) {
     const graceful = new Graceful({ brees: [bree] });
     graceful.listen();
     bree.start();
+    fastify.decorate("bree", bree);
   }
 }
 
