@@ -12,6 +12,6 @@ export const redis = new IORedis(process.env.REDIS_CONNECTION_STRING || "redis:/
 export default fp(async function (api) {
   api.register(await import("fastify-redis"), {
     client: redis,
-    closeClient: true
+    closeClient: true,
   });
 });

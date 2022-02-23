@@ -9,6 +9,7 @@ import Graceful from "@ladjs/graceful";
 import * as Sentry from "@sentry/node";
 
 import jobs from "./jobs/index.mjs";
+import { CHAINS } from "./contants/chains.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -19,7 +20,7 @@ const chainIdParamSchema = {
     properties: {
       chainId: {
         type: "number",
-        enum: [1, 250, 42161],
+        enum: CHAINS,
       },
     },
     required: ["chainId"],
