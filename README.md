@@ -1,6 +1,8 @@
 # Yearn API
 
-> Small SDK shim + Metadata endpoint for Yearn
+Small SDK shim + Metadata endpoint for Yearn
+
+This codebase hosts non user specific data provided by the [SDK](https://github.com/yearn/yearn-sdk) to increase the speed of providing this data as well as reducing the number of web3 calls 
 
 ## Setting up GitHub Actions
 
