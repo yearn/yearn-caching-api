@@ -1,7 +1,7 @@
 import ms from "ms";
 
 export const makeTokensSupportedCacheKey = (chainId) => `tokens.supported.${chainId}`;
-export const TokensSupportedCacheTime = ms("10 minutes");
+export const TokensSupportedCacheTime = ms("15 minutes");
 
 export const makeTokensMetadataCacheKey = (chainId) => `tokens.metadata.${chainId}`;
 export const TokensMetadataCacheTime = ms("10 minutes");
