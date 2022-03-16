@@ -25,11 +25,20 @@ const providerForChain = (chain) => {
   }
 };
 
+const getZapperApiKey = () => {
+  return process.env.ZAPPER_API_KEY || "96e0cc51-a62e-42ca-acee-910ea7d2a241"; // Use zapper public API key by default;
+};
+
 const makeSdks = () => {
   let sdks = {};
   for (const chain of CHAINS) {
     const provider = providerForChain(chain);
-    const sdk = new Yearn(chain, { provider, disableAllowlist: true, cache: { useCache: false } });
+    const sdk = new Yearn(chain, {
+      provider,
+      zapper: getZapperApiKey(),
+      disableAllowlist: true,
+      cache: { useCache: false },
+    });
     sdks[chain] = sdk;
   }
   return sdks;
@@ -67,11 +76,16 @@ export const makeSdksWithCachedState = async () => {
       let state = AssetService.deserializeState(cachedState.item);
       sdk = new Yearn(
         chain,
-        { provider, disableAllowlist: true, cache: { useCache: false } },
+        { provider, zapper: getZapperApiKey(), disableAllowlist: true, cache: { useCache: false } },
         state
       );
     } else {
-      sdk = new Yearn(chain, { provider, disableAllowlist: true, cache: { useCache: false } });
+      sdk = new Yearn(chain, {
+        provider,
+        zapper: getZapperApiKey(),
+        disableAllowlist: true,
+        cache: { useCache: false },
+      });
       populateSdkAssetCache(sdk, chain);
     }
     sdks[chain] = sdk;
