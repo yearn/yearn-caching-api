@@ -9,7 +9,7 @@ import Graceful from "@ladjs/graceful";
 import * as Sentry from "@sentry/node";
 
 import jobs from "./jobs/index.mjs";
-import { CHAINS } from "./contants/chains.mjs";
+import { CHAINS } from "./constants/chains.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
