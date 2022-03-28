@@ -38,6 +38,10 @@ const makeSdks = () => {
       zapper: getZapperApiKey(),
       disableAllowlist: true,
       cache: { useCache: false },
+      subgraph: {
+        mainnetSubgraphId: process.env.MAINNET_SUBGRAPH_ID,
+        subgraphKey: process.env.SUBGRAPH_API_KEY,
+      },
     });
     sdks[chain] = sdk;
   }
