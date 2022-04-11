@@ -26,7 +26,7 @@ import {
     for (let i = 0; i < assetsAddresses.length; i += size) {
       let chunk = assetsAddresses.slice(i, i + size);
       const vaultsDynamic = await sdk.vaults.getDynamic(chunk);
-      vaultsDynamicResult.push(vaultsDynamic);
+      vaultsDynamicResult = [...vaultsDynamicResult, ...vaultsDynamic];
     }
     if (vaultsDynamicResult.length) {
       cache.set(
