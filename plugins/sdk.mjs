@@ -39,8 +39,7 @@ const makeSdks = () => {
       disableAllowlist: true,
       cache: { useCache: false },
       subgraph: {
-        mainnetSubgraphId: process.env.MAINNET_SUBGRAPH_ID,
-        subgraphKey: process.env.SUBGRAPH_API_KEY,
+        mainnetSubgraphEndpoint: process.env.MAINNET_SUBGRAPH_ENDPOINT,
       },
     });
     sdks[chain] = sdk;
