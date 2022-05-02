@@ -79,7 +79,15 @@ export const makeSdksWithCachedState = async () => {
       let state = AssetService.deserializeState(cachedState.item);
       sdk = new Yearn(
         chain,
-        { provider, zapper: getZapperApiKey(), disableAllowlist: true, cache: { useCache: false } },
+        {
+          provider,
+          zapper: getZapperApiKey(),
+          disableAllowlist: true,
+          cache: { useCache: false },
+          subgraph: {
+            mainnetSubgraphEndpoint: process.env.MAINNET_SUBGRAPH_ENDPOINT,
+          },
+        },
         state
       );
     } else {
@@ -88,6 +96,9 @@ export const makeSdksWithCachedState = async () => {
         zapper: getZapperApiKey(),
         disableAllowlist: true,
         cache: { useCache: false },
+        subgraph: {
+          mainnetSubgraphEndpoint: process.env.MAINNET_SUBGRAPH_ENDPOINT,
+        },
       });
       populateSdkAssetCache(sdk, chain);
     }
