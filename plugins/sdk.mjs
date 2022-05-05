@@ -16,9 +16,10 @@ const providerForChain = (chain) => {
       return new JsonRpcProvider(process.env.WEB3_HTTP_PROVIDER);
     case 250:
       return new JsonRpcProvider({
-        url: process.env.WEB3_HTTP_PROVIDER_FTM_URL,
-        user: process.env.WEB3_HTTP_PROVIDER_FTM_USERNAME,
-        password: process.env.WEB3_HTTP_PROVIDER_FTM_PASSWORD,
+        url: "https://rpc.ankr.com/fantom",
+        // url: process.env.WEB3_HTTP_PROVIDER_FTM_URL,
+        // user: process.env.WEB3_HTTP_PROVIDER_FTM_USERNAME,
+        // password: process.env.WEB3_HTTP_PROVIDER_FTM_PASSWORD,
       });
     case 42161:
       return new JsonRpcProvider(process.env.WEB3_HTTP_PROVIDER_ARB);
