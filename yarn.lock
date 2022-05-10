@@ -700,10 +700,10 @@
   resolved "https://registry.yarnpkg.com/@types/yoga-layout/-/yoga-layout-1.9.2.tgz#efaf9e991a7390dc081a0b679185979a83a9639a"
   integrity sha512-S9q47ByT2pPvD65IvrWp7qppVMpk9WGMbVq9wbWZOHg6tnXSD4vyhao6nOSBwwfDdV2p3Kx9evA9vI+XWTfDvw==
 
-"@yfi/sdk@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@yfi/sdk/-/sdk-2.0.0.tgz#49fceaac0c596c503c910368653e93c788dd719a"
-  integrity sha512-SGp9zSmIXwb3tzi8nU77ZYvXsrJJw6IOgW/wEM4j87FsIoJBqwosLSQlHHhPKxSeSvbFCFfsuD4yM2FueXoc0Q==
+"@yfi/sdk@2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@yfi/sdk/-/sdk-2.0.1.tgz#6f1ab5717676dda6b64a03137f02f4c463bfdf32"
+  integrity sha512-K4A8Ib/8Ri+DWskHioKNBLGdSYtllBHKKSb52j3Ie7xhJGka3+pVHKzPt2SDNM3sdJslKOlWlb6T23P0CDgiTw==
   dependencies:
     bignumber.js "9.0.1"
     cross-fetch "3.1.4"
