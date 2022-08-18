@@ -3,7 +3,7 @@ import fp from "fastify-plugin";
 import { Yearn, AssetService } from "@yfi/sdk";
 import { JsonRpcProvider } from "@ethersproject/providers";
 import { cache } from "./caching.mjs";
-import { CHAINS } from "../contants/chains.mjs";
+import { CHAINS } from "../constants/chains.mjs";
 import ms from "ms";
 
 const makeAssetStateKey = (chain) => {
