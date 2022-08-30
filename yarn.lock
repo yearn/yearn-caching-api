@@ -700,13 +700,13 @@
   resolved "https://registry.yarnpkg.com/@types/yoga-layout/-/yoga-layout-1.9.2.tgz#efaf9e991a7390dc081a0b679185979a83a9639a"
   integrity sha512-S9q47ByT2pPvD65IvrWp7qppVMpk9WGMbVq9wbWZOHg6tnXSD4vyhao6nOSBwwfDdV2p3Kx9evA9vI+XWTfDvw==
 
-"@yfi/sdk@2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@yfi/sdk/-/sdk-2.0.1.tgz#6f1ab5717676dda6b64a03137f02f4c463bfdf32"
-  integrity sha512-K4A8Ib/8Ri+DWskHioKNBLGdSYtllBHKKSb52j3Ie7xhJGka3+pVHKzPt2SDNM3sdJslKOlWlb6T23P0CDgiTw==
+"@yfi/sdk@3.0.0-alpha.1":
+  version "3.0.0-alpha.1"
+  resolved "https://registry.yarnpkg.com/@yfi/sdk/-/sdk-3.0.0-alpha.1.tgz#4f54e1219484cb1af3ec9f00512d5d95c3358a0c"
+  integrity sha512-hpH9Tg2NeQ+Amx93nixYakaTvGyhSbw9CsleTCiReLfX57YwA9cyq1qF2089LpfRPXKeVm35HFSSoFXhqltPHg==
   dependencies:
     bignumber.js "9.0.1"
-    cross-fetch "3.1.4"
+    cross-fetch "3.1.5"
     dotenv "10.0.0"
     emittery "0.8.1"
     type-fest "1.2.1"
@@ -1423,14 +1423,7 @@ cron-validate@^1.4.1:
   dependencies:
     yup "0.32.9"
 
-cross-fetch@3.1.4:
-  version "3.1.4"
-  resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-3.1.4.tgz#9723f3a3a247bf8b89039f3a380a9244e8fa2f39"
-  integrity sha512-1eAtFWdIubi6T4XPy6ei9iUFoKpUkIF971QLN8lIvvvwueI65+Nw5haMNKUwfJxabqlIIDODJKGrQ66gxC0PbQ==
-  dependencies:
-    node-fetch "2.6.1"
-
-cross-fetch@^3.1.4:
+cross-fetch@3.1.5, cross-fetch@^3.1.4:
   version "3.1.5"
   resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-3.1.5.tgz#e1389f44d9e7ba767907f7af8454787952ab534f"
   integrity sha512-lvb1SBsI0Z7GDwmuid+mU3kWVBwTVUbe7S0H52yaaAdQOXq2YktTCZdlAcNKFzE6QtRz0snpw9bNiPeOIkkQvw==
@@ -3032,11 +3025,6 @@ node-emoji@^1.10.0:
   integrity sha512-wo2DpQkQp7Sjm2A0cq+sN7EHKO6Sl0ctXeBdFZrL9T9+UywORbufTcTZxom8YqpLQt/FqNMUkOpkZrJVYSKD3A==
   dependencies:
     lodash "^4.17.21"
-
-node-fetch@2.6.1:
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.1.tgz#045bd323631f76ed2e2b55573394416b639a0052"
-  integrity sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==
 
 node-fetch@2.6.7:
   version "2.6.7"
