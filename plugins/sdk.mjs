@@ -14,6 +14,8 @@ const providerForChain = (chain) => {
   switch (chain) {
     case 1:
       return new JsonRpcProvider(process.env.WEB3_HTTP_PROVIDER);
+    case 10:
+      return new JsonRpcProvider("https://mainnet.optimism.io");
     case 250:
       return new JsonRpcProvider({
         url: "https://rpc.ankr.com/fantom",
