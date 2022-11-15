@@ -31,22 +31,29 @@ const chainIdParamSchema = {
  * @param {import("fastify").FastifyInstance} fastify
  */
 export async function server(fastify, opts) {
-  Sentry.init({
-    dsn: process.env.SENTRY_DSN,
-    environment: process.env.NODE_ENV || "development",
-  });
-  fastify.setErrorHandler(function (err, request, reply) {
-    Sentry.withScope((scope) => {
-      if (request.raw.ip) {
-        scope.setUser({
-          ip_address: request.raw.ip,
-        });
-      }
-      scope.setTag("path", request.raw.url);
-      Sentry.captureException(err);
+  if (process.env.SENTRY_DSN) {
+    Sentry.init({
+      dsn: process.env.SENTRY_DSN,
+      environment: process.env.NODE_ENV || "development",
     });
+  }
+  fastify.setErrorHandler(function (err, request, reply) {
+    if (process.env.SENTRY_DSN) {
+      Sentry.withScope((scope) => {
+        if (request.raw.ip) {
+          scope.setUser({
+            ip_address: request.raw.ip,
+          });
+        }
+        scope.setTag("path", request.raw.url);
+        Sentry.captureException(err);
+      });
+    } else {
+      console.log(err);
+    }
     return reply.send(err);
   });
+
   fastify.setNotFoundHandler({}, function (request, reply) {
     const { url, method } = request.raw;
     const message = `Route ${method}:${url} not found`;
@@ -76,7 +83,12 @@ export async function server(fastify, opts) {
       defaultExtension: "mjs", // i'm a unicorn,
       jobs: jobs,
       errorHandler: (error, metadata) => {
-        Sentry.captureException(error, metadata);
+        if (process.env.SENTRY_DSN) {
+          Sentry.captureException(error, metadata);
+        } else {
+          console.log(error);
+          console.log(metadata);
+        }
       },
     });
     const graceful = new Graceful({ brees: [bree] });
