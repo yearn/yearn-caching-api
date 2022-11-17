@@ -33,10 +33,10 @@ const chainIdParamSchema = {
 export async function server(fastify, opts) {
   // sentry is enabled
   if (process.env.SENTRY_DSN) {
-    setSentryErrorHandler();
+    setSentryErrorHandler(fastify);
   // sentry is disabled
   } else {
-    setDefaultErrorHandler();
+    setDefaultErrorHandler(fastify);
   }
 
   fastify.setNotFoundHandler({}, function (request, reply) {
