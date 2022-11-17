@@ -31,22 +31,14 @@ const chainIdParamSchema = {
  * @param {import("fastify").FastifyInstance} fastify
  */
 export async function server(fastify, opts) {
-  Sentry.init({
-    dsn: process.env.SENTRY_DSN,
-    environment: process.env.NODE_ENV || "development",
-  });
-  fastify.setErrorHandler(function (err, request, reply) {
-    Sentry.withScope((scope) => {
-      if (request.raw.ip) {
-        scope.setUser({
-          ip_address: request.raw.ip,
-        });
-      }
-      scope.setTag("path", request.raw.url);
-      Sentry.captureException(err);
-    });
-    return reply.send(err);
-  });
+  // sentry is enabled
+  if (process.env.SENTRY_DSN) {
+    setSentryErrorHandler();
+  // sentry is disabled
+  } else {
+    setDefaultErrorHandler();
+  }
+
   fastify.setNotFoundHandler({}, function (request, reply) {
     const { url, method } = request.raw;
     const message = `Route ${method}:${url} not found`;
@@ -76,7 +68,14 @@ export async function server(fastify, opts) {
       defaultExtension: "mjs", // i'm a unicorn,
       jobs: jobs,
       errorHandler: (error, metadata) => {
-        Sentry.captureException(error, metadata);
+        // sentry is enabled
+        if (process.env.SENTRY_DSN) {
+          Sentry.captureException(error, metadata);
+        // sentry is disabled
+        } else {
+          console.log(error);
+          console.log(metadata);
+        }
       },
     });
     const graceful = new Graceful({ brees: [bree] });
@@ -84,6 +83,32 @@ export async function server(fastify, opts) {
     bree.start();
     fastify.decorate("bree", bree);
   }
+}
+
+export async function setSentryErrorHandler(fastify) {
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    environment: process.env.NODE_ENV || "development",
+  });
+  fastify.setErrorHandler(function (err, request, reply) {
+    Sentry.withScope((scope) => {
+      if (request.raw.ip) {
+        scope.setUser({
+          ip_address: request.raw.ip,
+        });
+      }
+      scope.setTag("path", request.raw.url);
+      Sentry.captureException(err);
+    });
+    return reply.send(err);
+  });
+}
+
+export async function setDefaultErrorHandler(fastify) {
+  fastify.setErrorHandler(function (err, request, reply) {
+    console.log(err);
+    return reply.send(err);
+  });
 }
 
 const REQUEST_TIMEOUT = parseInt(process.env.REQUEST_TIMEOUT || "1000", 10);
