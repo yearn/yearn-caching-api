@@ -3,10 +3,11 @@ import { fileURLToPath } from "url";
 
 import "dotenv/config";
 
-import AutoLoad from "fastify-autoload";
+import AutoLoad from "@fastify/autoload";
 import Bree from "bree";
 import Graceful from "@ladjs/graceful";
 import * as Sentry from "@sentry/node";
+import SegfaultHandler from "segfault-handler";
 
 import jobs from "./jobs/index.mjs";
 import { CHAINS } from "./constants/chains.mjs";
@@ -31,6 +32,18 @@ const chainIdParamSchema = {
  * @param {import("fastify").FastifyInstance} fastify
  */
 export async function server(fastify, opts) {
+  console.log("node version: " + process.version);
+  // enable SEGFAULT handler
+  SegfaultHandler.registerHandler("crash.log", function (signal, address, stack) {
+    console.log("*** RECEIVED SEGFAULT ***");
+    console.log("signal      : " + signal);
+    console.log("address     : " + address);
+    console.log("stack       :");
+    for (const line of stack) {
+      console.log(line);
+    }
+  });
+
   // sentry is enabled
   if (process.env.SENTRY_DSN) {
     setSentryErrorHandler(fastify);

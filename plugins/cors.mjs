@@ -6,7 +6,7 @@ import fp from "fastify-plugin";
  * @see https://github.com/fastify/fastify-cors
  */
 export default fp(async function (api) {
-  api.register(await import("fastify-cors"), {
+  api.register(await import("@fastify/cors"), {
     origin: "*",
     methods: "GET",
   });
