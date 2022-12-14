@@ -41,7 +41,7 @@
     "@ladjs/graceful": "^1.0.5",
     "@sentry/node": "^6.17.4",
     "@sentry/tracing": "^6.17.4",
-    "@yfi/sdk": "3.0.0-alpha.7",
+    "@yfi/sdk": "3.0.0-alpha.9",
     "abstract-cache": "^1.0.1",
     "abstract-cache-redis": "^2.0.0",
     "bree": "^6.2.1",
