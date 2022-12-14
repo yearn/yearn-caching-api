@@ -3,7 +3,7 @@ import { fileURLToPath } from "url";
 
 import "dotenv/config";
 
-import AutoLoad from "fastify-autoload";
+import AutoLoad from "@fastify/autoload";
 import Bree from "bree";
 import Graceful from "@ladjs/graceful";
 import * as Sentry from "@sentry/node";
