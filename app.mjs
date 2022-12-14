@@ -32,10 +32,10 @@ const chainIdParamSchema = {
  * @param {import("fastify").FastifyInstance} fastify
  */
 export async function server(fastify, opts) {
+  console.log("node version: " + process.version);
   // enable SEGFAULT handler
   SegfaultHandler.registerHandler("crash.log", function (signal, address, stack) {
     console.log("*** RECEIVED SEGFAULT ***");
-    console.log("node version: " + process.version);
     console.log("signal      : " + signal);
     console.log("address     : " + address);
     console.log("stack       :");
