@@ -67,5 +67,9 @@
     "prettier": "^2.3.2",
     "sentry-testkit": "^3.3.7",
     "tap": "^15.0.9"
+  },
+  "resolutions": {
+    "keccak": "git+https://github.com/mariuspod/keccak.git",
+    "secp256k1": "git+https://github.com/mariuspod/secp256k1-node.git"
   }
 }
