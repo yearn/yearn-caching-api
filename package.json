@@ -69,7 +69,7 @@
     "tap": "^15.0.9"
   },
   "resolutions": {
-    "keccak": "git+https://github.com/mariuspod/keccak.git",
-    "secp256k1": "git+https://github.com/mariuspod/secp256k1-node.git"
+    "keccak": "^3.0.3",
+    "secp256k1": "^5.0.0"
   }
 }
